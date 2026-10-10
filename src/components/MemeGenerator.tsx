@@ -102,7 +102,7 @@ export const MemeGenerator = ({ open, onClose, question, answer }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-[440px] p-0 bg-card border-primary/40 overflow-hidden max-h-[92vh] overflow-y-auto">
+      <DialogContent className="max-w-[440px] p-0 bg-card border-primary/40 max-h-[calc(100dvh-1rem)] sm:max-h-[92dvh] overflow-y-auto">
         <DialogHeader className="px-4 pt-4 pb-2 flex-row items-center justify-between space-y-0">
           <DialogTitle className="font-display tracking-widest neon-text text-base">
             🖼️ MEME · {tpl.name.toUpperCase()}

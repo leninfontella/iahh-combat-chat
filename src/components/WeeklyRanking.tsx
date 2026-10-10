@@ -42,7 +42,7 @@ export const WeeklyRanking = ({ open, onClose, refreshKey }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-lg p-0 bg-card border-primary/40 max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-lg p-0 bg-card border-primary/40 max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] flex flex-col overflow-hidden">
         <DialogHeader className="px-4 pt-4 pb-2 flex-row items-center justify-between space-y-0 shrink-0">
           <DialogTitle className="font-display tracking-widest neon-text text-base flex items-center gap-2">
             <Trophy className="w-4 h-4" />
@@ -71,7 +71,7 @@ export const WeeklyRanking = ({ open, onClose, refreshKey }: Props) => {
           </div>
 
           {/* Stats grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 gap-2">
             <Stat icon={<Zap className="w-3.5 h-3.5" />} label="XP" value={cur.xp} color="text-primary" />
             <Stat icon={<Flame className="w-3.5 h-3.5" />} label="STREAK" value={`${cur.streakDays}d`} color="text-neon-magenta" />
             <Stat icon={<MessageSquare className="w-3.5 h-3.5" />} label="MSGS" value={cur.messages} color="text-foreground" />

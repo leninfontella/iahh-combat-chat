@@ -532,7 +532,7 @@ export const RoastEngine = ({ open, onClose }: Props) => {
           <div className="text-[10px] font-display tracking-widest text-muted-foreground mb-2">
             ⚡ NÍVEL DE DESTRUIÇÃO
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+          <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 gap-1.5">
             {ROAST_INTENSITIES.map((i) => {
               const active = intensity.id === i.id;
               return (

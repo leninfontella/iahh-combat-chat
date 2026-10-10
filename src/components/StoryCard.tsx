@@ -99,7 +99,7 @@ export const StoryCard = ({ open, onClose, question, answer, persona }: Props) =
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-[420px] p-0 bg-card border-primary/40 overflow-hidden max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-[420px] p-0 bg-card border-primary/40 max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] overflow-y-auto">
         <DialogHeader className="px-4 pt-4 pb-2 flex-row items-center justify-between space-y-0">
           <DialogTitle className="font-display tracking-widest neon-text text-base">
             📱 IAHH! STORY · 1080×1920

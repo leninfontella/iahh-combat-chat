@@ -124,7 +124,7 @@ export const DuelMode = ({ open, onClose, onXp, onWin }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && !running && onClose()}>
-      <DialogContent className="max-w-2xl p-0 bg-card border-neon-magenta/40 max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-2xl p-0 bg-card border-neon-magenta/40 max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] flex flex-col overflow-hidden">
         <DialogHeader className="px-4 pt-4 pb-2 flex-row items-center justify-between space-y-0 shrink-0">
           <DialogTitle className="font-display tracking-widest neon-text-magenta text-base flex items-center gap-2">
             <Swords className="w-4 h-4" />
@@ -141,7 +141,7 @@ export const DuelMode = ({ open, onClose, onXp, onWin }: Props) => {
 
         <div className="px-4 pb-4 flex-1 min-h-0 flex flex-col gap-3 overflow-hidden">
           {/* Setup */}
-          <div className="grid grid-cols-2 gap-2 shrink-0">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2 shrink-0">
             <PersonaPicker label="LADO ESQUERDO" value={p1} onChange={setP1} disabled={running} color="neon-yellow" />
             <PersonaPicker label="LADO DIREITO" value={p2} onChange={setP2} disabled={running} color="neon-magenta" />
           </div>

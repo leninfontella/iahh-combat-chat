@@ -302,7 +302,7 @@ const StatsPanel = ({ stats, onClose }: { stats: RouletteStats; onClose: () => v
         <div className="text-center mb-4 tracking-[3px]" style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, color: NEON_Y }}>
           🔫 FICHA DE SOBREVIVÊNCIA
         </div>
-        <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-2 mb-4">
           {cells.map((s) => (
             <div key={s.l} className="rounded-md px-2.5 py-2" style={{ background: "#111", border: "1px solid #1e1e1e" }}>
               <div className="font-mono" style={{ fontSize: 8, color: "#444", letterSpacing: 1 }}>{s.l}</div>
@@ -556,7 +556,7 @@ export const RouletteMode = ({ open, onClose, currentPersona, recentUserMessages
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent
-        className="max-w-full sm:max-w-2xl w-full h-[100dvh] sm:h-[92vh] p-0 gap-0 overflow-hidden flex flex-col"
+        className="max-w-full sm:max-w-2xl w-full h-[calc(100dvh-1rem)] sm:h-[92dvh] p-0 gap-0 overflow-hidden flex flex-col"
         style={{ background: bg, color: "#fff", border: `1px solid ${BLOOD}44`, transition: "background 1s", fontFamily: "'JetBrains Mono',monospace" }}
       >
         <style>{`
@@ -708,7 +708,7 @@ export const RouletteMode = ({ open, onClose, currentPersona, recentUserMessages
               >
                 🔫 PUXAR O GATILHO
               </button>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mt-1">
+              <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 gap-1.5 mt-1">
                 {CHAMBERS.map((c) => (
                   <div key={c.id} className="flex items-center gap-1.5 font-mono" style={{ fontSize: 9, color: "#444" }}>
                     <span

@@ -141,7 +141,7 @@ export const DailyChallengeMode = ({ open, onClose, onChallengeComplete }: Props
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-3xl h-[90vh] flex flex-col p-0 gap-0 bg-background">
+      <DialogContent className="max-w-3xl h-[calc(100dvh-1rem)] sm:h-[90dvh] flex flex-col p-0 gap-0 overflow-hidden bg-background">
         <DialogHeader className="p-4 pb-2 border-b border-border">
           <DialogTitle className="flex items-center gap-2">
             <span
@@ -245,7 +245,7 @@ export const DailyChallengeMode = ({ open, onClose, onChallengeComplete }: Props
               size="sm"
               onClick={resetConv}
               disabled={streaming}
-              className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] h-8"
+              className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] h-11 sm:h-8"
             >
               <RotateCcw className="w-3.5 h-3.5 mr-1" />
               Resetar conversa

@@ -112,7 +112,7 @@ export const ConfessorMode = ({ open, onClose, onVote }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display tracking-widest text-xl flex items-center gap-2">
             <Eye className="w-5 h-5 text-neon-magenta" />

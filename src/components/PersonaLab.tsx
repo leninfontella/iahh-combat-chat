@@ -98,7 +98,7 @@ export const PersonaLab = ({ open, onClose, onUse, importDraft }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-2xl bg-card border-neon-magenta/40 max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl bg-card border-neon-magenta/40 max-h-[calc(100dvh-1rem)] sm:max-h-[85dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display tracking-widest text-neon-magenta flex items-center gap-2">
             <FlaskConical className="w-5 h-5" />

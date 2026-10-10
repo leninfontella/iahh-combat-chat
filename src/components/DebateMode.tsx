@@ -125,7 +125,7 @@ export const DebateMode = ({ open, onClose, onWinnerVote }: DebateModeProps) => 
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && close()}>
-      <DialogContent className="bg-card border-neon-magenta/40 max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-card border-neon-magenta/40 max-w-2xl max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display tracking-widest text-neon-magenta flex items-center gap-2">
             <Mic className="w-5 h-5" />
@@ -159,7 +159,7 @@ export const DebateMode = ({ open, onClose, onWinnerVote }: DebateModeProps) => 
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
               <PersonaPicker label="LADO A" value={personaA} onChange={setPersonaA} accent="cyan" />
               <PersonaPicker label="LADO B" value={personaB} onChange={setPersonaB} accent="magenta" />
             </div>
@@ -205,7 +205,7 @@ export const DebateMode = ({ open, onClose, onWinnerVote }: DebateModeProps) => 
             </div>
 
             {/* Turnos */}
-            <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-[40dvh] overflow-y-auto pr-1">
               {turns.map((t, i) => {
                 const meta = t.side === "A" ? pa : pb;
                 const accent = t.side === "A" ? "cyan" : "magenta";
@@ -249,7 +249,7 @@ export const DebateMode = ({ open, onClose, onWinnerVote }: DebateModeProps) => 
                 <div className="text-[11px] font-display tracking-widest text-center text-muted-foreground">
                   🎙️ DEBATE ENCERRADO · VOCÊ É O JURI
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
                   <Button
                     disabled={!!voted}
                     onClick={() => vote("A")}

@@ -350,7 +350,7 @@ export const Chat = () => {
         <div className="fixed inset-0 z-50 pointer-events-none grid place-items-center animate-blood-flash">
           <div className="text-center animate-fatality-zoom">
             <div
-              className="font-display text-7xl sm:text-9xl tracking-widest"
+              className="font-display text-5xl min-[360px]:text-6xl sm:text-9xl tracking-wider sm:tracking-widest"
               style={{
                 color: "hsl(var(--blood))",
                 textShadow:
@@ -367,11 +367,11 @@ export const Chat = () => {
         </div>
       )}
 
-      {/* Sidebar vertical estilo Instagram — expande no hover */}
-      <aside className="group/sidebar shrink-0 flex flex-col items-stretch gap-1.5 py-1 transition-all duration-300 w-10 hover:w-36 overflow-hidden border-r border-border pr-1.5">
-        <div className="text-[9px] font-display tracking-widest text-muted-foreground px-1 mb-1 truncate">
-          <span className="group-hover/sidebar:hidden">▸</span>
-          <span className="hidden group-hover/sidebar:inline">DOJO · CAOS</span>
+      {/* Barra compacta no touch; expande com hover/foco em telas maiores. */}
+      <aside className="group/sidebar shrink-0 flex flex-col items-stretch gap-1.5 py-1 transition-all duration-300 w-11 md:w-10 md:hover:w-36 md:focus-within:w-36 overflow-x-hidden overflow-y-auto border-r border-border pr-1">
+        <div className="hidden md:block text-[9px] font-display tracking-widest text-muted-foreground px-1 mb-1 truncate">
+          <span className="group-hover/sidebar:hidden group-focus-within/sidebar:hidden">▸</span>
+          <span className="hidden group-hover/sidebar:inline group-focus-within/sidebar:inline">DOJO · CAOS</span>
         </div>
         {actions.map(({ icon: Icon, label, color, onClick, disabled }) => (
           <button
@@ -380,10 +380,10 @@ export const Chat = () => {
             disabled={disabled}
             title={label}
             aria-label={label}
-            className={`h-8 w-full rounded-md border transition-colors inline-flex items-center justify-start px-1.5 gap-2 disabled:opacity-40 ${colorMap[color]}`}
+            className={`h-11 md:h-8 w-full rounded-md border transition-colors inline-flex items-center justify-center md:justify-start px-1.5 gap-2 disabled:opacity-40 ${colorMap[color]}`}
           >
             <Icon className="w-4 h-4 shrink-0" />
-            <span className="text-[10px] font-display tracking-widest whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-opacity">
+            <span className="hidden md:inline text-[10px] font-display tracking-widest whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 group-focus-within/sidebar:opacity-100 transition-opacity">
               {label}
             </span>
           </button>
@@ -478,7 +478,7 @@ export const Chat = () => {
             size="sm"
             onClick={worsen}
             disabled={streaming || reverseMode}
-            className={`border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10 font-display tracking-wider text-[11px] sm:text-xs h-8 px-2 sm:px-3 ${
+            className={`border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10 font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ${
               comboCount >= 2 ? "animate-pulse-glow border-destructive text-destructive" : ""
             }`}
           >
@@ -503,7 +503,7 @@ export const Chat = () => {
             size="sm"
             onClick={reset}
             disabled={streaming}
-            className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] sm:text-xs h-8 px-2 sm:px-3 ml-auto"
+            className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ml-auto"
           >
             <RotateCcw className="w-3.5 h-3.5 mr-1" />
             <span className="hidden sm:inline">Resetar dojo</span>
