@@ -6,6 +6,7 @@ import { Swords, Zap, X } from "lucide-react";
 import { PERSONAS, type PersonaId, type Persona } from "@/lib/personas";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
@@ -39,10 +40,7 @@ export const DuelMode = ({ open, onClose, onXp, onWin }: Props) => {
   ): Promise<string> => {
     const resp = await fetch(CHAT_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-      },
+      headers: await getSupabaseFunctionHeaders(),
       body: JSON.stringify({
         messages: history,
         persona,

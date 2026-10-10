@@ -13,6 +13,7 @@ import {
 } from "@/lib/challenges";
 import { ChatMessage } from "./ChatMessage";
 import { cn } from "@/lib/utils";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
@@ -57,10 +58,7 @@ export const DailyChallengeMode = ({ open, onClose, onChallengeComplete }: Props
     try {
       const resp = await fetch(CHAT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
+        headers: await getSupabaseFunctionHeaders(),
         body: JSON.stringify({ messages: history, persona }),
       });
 

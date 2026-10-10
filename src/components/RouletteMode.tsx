@@ -9,6 +9,7 @@ import {
   type RouletteStats,
 } from "@/lib/rouletteStats";
 import { toast } from "sonner";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 
 /* ──────────────────────────────────────────────
    PALETTE & CONSTANTS
@@ -56,7 +57,6 @@ const BULLETS: { id: BulletKind; name: string; emoji: string; color: string; des
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 const ROULETTE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/roulette`;
-const AUTH_HEADER = `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`;
 
 /* ──────────────────────────────────────────────
    WEBAUDIO SFX
@@ -514,7 +514,7 @@ export const RouletteMode = ({ open, onClose, currentPersona, recentUserMessages
       await streamSingle("🔄", "INVERTIDO", b.color, async () => {
         const resp = await fetch(CHAT_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: AUTH_HEADER },
+          headers: await getSupabaseFunctionHeaders(),
           body: JSON.stringify({
             messages: [{ role: "user", content: userMsg }],
             persona: activePersona,
@@ -877,7 +877,7 @@ const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 async function callChat(q: string, personaId: PersonaId | string): Promise<string> {
   const resp = await fetch(CHAT_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: AUTH_HEADER },
+    headers: await getSupabaseFunctionHeaders(),
     body: JSON.stringify({
       messages: [{ role: "user", content: q }],
       persona: personaId,
@@ -890,7 +890,7 @@ async function callChat(q: string, personaId: PersonaId | string): Promise<strin
 async function callRoulette(event: string, q: string, context = ""): Promise<string> {
   const resp = await fetch(ROULETTE_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: AUTH_HEADER },
+    headers: await getSupabaseFunctionHeaders(),
     body: JSON.stringify({ event, question: q, context }),
   });
   if (!resp.ok) throw new Error("roulette failed");

@@ -18,6 +18,7 @@ import { ConfessorMode } from "./ConfessorMode";
 import { RouletteMode } from "./RouletteMode";
 import { toast } from "sonner";
 import { useProgress } from "@/hooks/useProgress";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 import { XP_RULES } from "@/lib/belts";
 import { BeltBadge } from "./BeltBadge";
 import { bumpWeekly } from "@/lib/weeklyStats";
@@ -132,10 +133,7 @@ export const Chat = () => {
     try {
       const resp = await fetch(CHAT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
+        headers: await getSupabaseFunctionHeaders(),
         body: JSON.stringify({
           messages: history,
           persona,

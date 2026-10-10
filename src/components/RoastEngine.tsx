@@ -13,6 +13,7 @@ import {
   type RoastDimension,
 } from "@/lib/roastTypes";
 import mascot from "@/assets/iahh-mascot.png";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 
 const ROAST_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/roast`;
 const NEON_Y = "#FFD700";
@@ -408,10 +409,7 @@ export const RoastEngine = ({ open, onClose }: Props) => {
     try {
       const resp = await fetch(ROAST_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
+        headers: await getSupabaseFunctionHeaders(),
         body: JSON.stringify({
           systemPrompt: type.systemPrompt(text),
           intensityModifier: intensity.modifier,

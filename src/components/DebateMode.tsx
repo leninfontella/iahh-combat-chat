@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { PERSONAS, type PersonaId } from "@/lib/personas";
 import { Mic, Swords, Trophy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { getSupabaseFunctionHeaders } from "@/lib/supabaseFunctionHeaders";
 
 interface DebateModeProps {
   open: boolean;
@@ -57,10 +58,7 @@ export const DebateMode = ({ open, onClose, onWinnerVote }: DebateModeProps) => 
   const fetchTurn = async (side: "A" | "B", history: Turn[], round: number): Promise<Turn> => {
     const resp = await fetch(DEBATE_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-      },
+      headers: await getSupabaseFunctionHeaders(),
       body: JSON.stringify({
         topic,
         side,
