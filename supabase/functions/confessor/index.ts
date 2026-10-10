@@ -45,7 +45,7 @@ O usuário fez uma confissão real em 1 frase. Dê UM conselho CURTO, ÚNICO, OP
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "gemini-2.5-flash",
+          model: "gemini-3.8-flash",
           messages: [
             { role: "system", content: system },
             { role: "user", content: `Confissão: "${confession}"\n\nMe dê seu conselho em até 2 frases.` },
