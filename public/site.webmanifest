@@ -1,0 +1,17 @@
+{
+  "name": "IA.AHH! — A IA com excesso de confiança",
+  "short_name": "IA.AHH!",
+  "description": "Chatbot satírico com personas, duelos, debates e roasts.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/iahh-icon.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
