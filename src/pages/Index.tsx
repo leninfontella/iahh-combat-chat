@@ -19,7 +19,7 @@ const Index = () => {
   };
 
   return (
-    <div className="h-[100dvh] flex flex-col relative scanlines bg-gradient-hero overflow-hidden">
+    <div className="app-viewport-shell flex flex-col relative scanlines bg-gradient-hero overflow-hidden">
       <div className="flex-1 flex flex-col w-full px-2 sm:px-4 md:px-8 py-2 sm:py-4 md:py-6 relative z-10 min-h-0">
         {/* Hero — compacto, com mascote menor no mobile */}
         <header className="flex items-center gap-2 sm:gap-3 md:gap-5 mb-2 sm:mb-4 shrink-0">
@@ -67,7 +67,8 @@ const Index = () => {
 
         {/* Footer minimalista — escondido em telas muito pequenas pra ganhar espaço */}
         <footer className="hidden sm:block mt-2 text-center text-[10px] text-muted-foreground font-mono shrink-0">
-          🥋 Treinado em má-fé · <span className="neon-text-magenta">IAHH! Dojo</span>
+          🥋 Treinado em má-fé ·{" "}
+          <span className="neon-text-magenta">IAHH! Dojo</span>
         </footer>
       </div>
     </div>

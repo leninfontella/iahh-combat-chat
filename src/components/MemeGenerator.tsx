@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Download, Share2, X, Shuffle } from "lucide-react";
+import { Download, Share2, Shuffle } from "lucide-react";
 import { toast } from "sonner";
 import {
   MEME_TEMPLATES,
@@ -107,12 +107,6 @@ export const MemeGenerator = ({ open, onClose, question, answer }: Props) => {
           <DialogTitle className="font-display tracking-widest neon-text text-base">
             🖼️ MEME · {tpl.name.toUpperCase()}
           </DialogTitle>
-          <button
-            onClick={onClose}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </DialogHeader>
 
         <div className="px-4 pb-4 space-y-3">

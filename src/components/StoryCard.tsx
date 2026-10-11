@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Download, Share2, X, Music2, Zap } from "lucide-react";
+import { Download, Share2, Music2, Zap } from "lucide-react";
 import { toast } from "sonner";
 import mascot from "@/assets/iahh-mascot.png";
 import type { Persona } from "@/lib/personas";
@@ -104,9 +104,6 @@ export const StoryCard = ({ open, onClose, question, answer, persona }: Props) =
           <DialogTitle className="font-display tracking-widest neon-text text-base">
             📱 IAHH! STORY · 1080×1920
           </DialogTitle>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <X className="w-4 h-4" />
-          </button>
         </DialogHeader>
 
         <div className="px-4 pb-4 space-y-3">

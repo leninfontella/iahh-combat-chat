@@ -13,7 +13,21 @@ import { WeeklyRanking } from "./WeeklyRanking";
 import { RoastEngine } from "./RoastEngine";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Skull, RotateCcw, Swords, RefreshCw, Trophy, Flame, Target, Mic, Eye, Crosshair } from "lucide-react";
+import {
+  Send,
+  Skull,
+  RotateCcw,
+  Swords,
+  RefreshCw,
+  Trophy,
+  Flame,
+  Target,
+  Mic,
+  Eye,
+  Crosshair,
+  Menu,
+  X,
+} from "lucide-react";
 import { ConfessorMode } from "./ConfessorMode";
 import { RouletteMode } from "./RouletteMode";
 import { toast } from "sonner";
@@ -38,7 +52,9 @@ const GLITCH_CHANCE = 0.12; // 12% por mensagem normal
 
 export const Chat = () => {
   const [persona, setPersona] = useState<PersonaId | string>("sensei");
-  const [customs, setCustoms] = useState<CustomPersona[]>(() => loadCustomPersonas());
+  const [customs, setCustoms] = useState<CustomPersona[]>(() =>
+    loadCustomPersonas(),
+  );
   const [labOpen, setLabOpen] = useState(false);
   const [labDraft, setLabDraft] = useState<CustomPersona | null>(null);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -61,6 +77,7 @@ export const Chat = () => {
   const [debateOpen, setDebateOpen] = useState(false);
   const [confessorOpen, setConfessorOpen] = useState(false);
   const [rouletteOpen, setRouletteOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const arenaRef = useRef<HTMLDivElement>(null);
@@ -73,8 +90,8 @@ export const Chat = () => {
     const greeting = builtin
       ? builtin.greeting
       : custom
-      ? `${custom.emoji} ${custom.name} entrou no dojo. "${custom.catchphrase}". Manda.`
-      : "Pergunte.";
+        ? `${custom.emoji} ${custom.name} entrou no dojo. "${custom.catchphrase}". Manda.`
+        : "Pergunte.";
     setMessages([{ role: "assistant", content: greeting }]);
     setComboCount(0);
     setReverseMode(false);
@@ -148,7 +165,8 @@ export const Chat = () => {
       });
 
       if (!resp.ok) {
-        if (resp.status === 429) toast.error("IAHH! tá cansado. Espera um pouco.");
+        if (resp.status === 429)
+          toast.error("IAHH! tá cansado. Espera um pouco.");
         else if (resp.status === 402) toast.error("Créditos esgotados.");
         else toast.error("Erro no servidor do dojo.");
         setMessages((prev) => prev.slice(0, -1));
@@ -197,10 +215,13 @@ export const Chat = () => {
 
       // Pós-stream: checar desafio e flag glitch
       if (opts.glitch && opts.glitchTo) {
-        toast(`⚡ GLITCH! IAHH virou ${PERSONAS.find((p) => p.id === opts.glitchTo)?.name}`, {
-          description: "A IA bugou no meio. +5 XP de caos.",
-          duration: 4000,
-        });
+        toast(
+          `⚡ GLITCH! IAHH virou ${PERSONAS.find((p) => p.id === opts.glitchTo)?.name}`,
+          {
+            description: "A IA bugou no meio. +5 XP de caos.",
+            duration: 4000,
+          },
+        );
         addXp(5);
         bumpWeekly({ xp: 5, glitches: 1 });
         setRankingKey((k) => k + 1);
@@ -222,7 +243,8 @@ export const Chat = () => {
     setComboCount(0);
     const next: Msg[] = [...messages, { role: "user", content: text }];
     setMessages(next);
-    const xpGain = XP_RULES.message + (text.length > 80 ? XP_RULES.longMessage : 0);
+    const xpGain =
+      XP_RULES.message + (text.length > 80 ? XP_RULES.longMessage : 0);
     addXp(xpGain, "message");
     bumpWeekly({ xp: xpGain, messages: 1 });
     setRankingKey((k) => k + 1);
@@ -247,15 +269,18 @@ export const Chat = () => {
 
   const worsen = async () => {
     if (streaming) return;
-    const lastUserIdx = [...messages].reverse().findIndex((m) => m.role === "user");
+    const lastUserIdx = [...messages]
+      .reverse()
+      .findIndex((m) => m.role === "user");
     if (lastUserIdx === -1) {
       toast("Faça uma pergunta primeiro.");
       return;
     }
     const cutoff = messages.length - 1;
-    const trimmed = messages[cutoff].role === "assistant"
-      ? messages.slice(0, cutoff)
-      : messages;
+    const trimmed =
+      messages[cutoff].role === "assistant"
+        ? messages.slice(0, cutoff)
+        : messages;
     setMessages(trimmed);
 
     const newCombo = comboCount + 1;
@@ -324,27 +349,85 @@ export const Chat = () => {
         tagline: customMeta.catchphrase,
         greeting: customMeta.catchphrase,
       }
-    : PERSONAS.find((p) => p.id === persona) ?? PERSONAS[0];
+    : (PERSONAS.find((p) => p.id === persona) ?? PERSONAS[0]);
 
+  const openFromMenu = (action: () => void) => {
+    setMobileMenuOpen(false);
+    action();
+  };
   const actions = [
-    { icon: Swords, label: "DUELO", color: "neon-magenta", onClick: () => setDuelOpen(true), disabled: false },
-    { icon: Crosshair, label: "ROLETA", color: "neon-magenta", onClick: () => setRouletteOpen(true), disabled: false },
-    { icon: RefreshCw, label: "REVERSO", color: "neon-cyan", onClick: startReverse, disabled: streaming },
-    { icon: Trophy, label: "RANKING", color: "primary", onClick: () => setRankingOpen(true), disabled: false },
-    { icon: Flame, label: "ROAST", color: "neon-yellow", onClick: () => setRoastOpen(true), disabled: false },
-    { icon: Target, label: "DESAFIO", color: "neon-magenta", onClick: () => setChallengeOpen(true), disabled: false },
-    { icon: Mic, label: "DEBATE", color: "neon-cyan", onClick: () => setDebateOpen(true), disabled: false },
-    { icon: Eye, label: "CONFESSOR", color: "neon-magenta", onClick: () => setConfessorOpen(true), disabled: false },
+    {
+      icon: Swords,
+      label: "DUELO",
+      color: "neon-magenta",
+      onClick: () => openFromMenu(() => setDuelOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: Crosshair,
+      label: "ROLETA",
+      color: "neon-magenta",
+      onClick: () => openFromMenu(() => setRouletteOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: RefreshCw,
+      label: "REVERSO",
+      color: "neon-cyan",
+      onClick: () => openFromMenu(startReverse),
+      disabled: streaming,
+    },
+    {
+      icon: Trophy,
+      label: "RANKING",
+      color: "primary",
+      onClick: () => openFromMenu(() => setRankingOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: Flame,
+      label: "ROAST",
+      color: "neon-yellow",
+      onClick: () => openFromMenu(() => setRoastOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: Target,
+      label: "DESAFIO",
+      color: "neon-magenta",
+      onClick: () => openFromMenu(() => setChallengeOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: Mic,
+      label: "DEBATE",
+      color: "neon-cyan",
+      onClick: () => openFromMenu(() => setDebateOpen(true)),
+      disabled: false,
+    },
+    {
+      icon: Eye,
+      label: "CONFESSOR",
+      color: "neon-magenta",
+      onClick: () => openFromMenu(() => setConfessorOpen(true)),
+      disabled: false,
+    },
   ];
   const colorMap: Record<string, string> = {
-    "neon-magenta": "border-neon-magenta/60 text-neon-magenta hover:bg-neon-magenta/10",
-    "neon-cyan": "border-[hsl(var(--neon-cyan)/0.6)] text-[hsl(var(--neon-cyan))] hover:bg-[hsl(var(--neon-cyan)/0.1)]",
-    "primary": "border-primary/60 text-primary hover:bg-primary/10",
-    "neon-yellow": "border-[hsl(var(--neon-yellow)/0.6)] text-[hsl(var(--neon-yellow))] hover:bg-[hsl(var(--neon-yellow)/0.1)]",
+    "neon-magenta":
+      "border-neon-magenta/60 text-neon-magenta hover:bg-neon-magenta/10",
+    "neon-cyan":
+      "border-[hsl(var(--neon-cyan)/0.6)] text-[hsl(var(--neon-cyan))] hover:bg-[hsl(var(--neon-cyan)/0.1)]",
+    primary: "border-primary/60 text-primary hover:bg-primary/10",
+    "neon-yellow":
+      "border-[hsl(var(--neon-yellow)/0.6)] text-[hsl(var(--neon-yellow))] hover:bg-[hsl(var(--neon-yellow)/0.1)]",
   };
 
   return (
-    <div ref={arenaRef} className={`flex h-full gap-2 sm:gap-3 ${shake ? "animate-screen-shake" : ""}`}>
+    <div
+      ref={arenaRef}
+      className={`flex h-full gap-2 sm:gap-3 ${shake ? "animate-screen-shake" : ""}`}
+    >
       {/* FATALITY overlay */}
       {showFatality && (
         <div className="fixed inset-0 z-50 pointer-events-none grid place-items-center animate-blood-flash">
@@ -367,11 +450,45 @@ export const Chat = () => {
         </div>
       )}
 
-      {/* Barra compacta no touch; expande com hover/foco em telas maiores. */}
-      <aside className="group/sidebar shrink-0 flex flex-col items-stretch gap-1.5 py-1 transition-all duration-300 w-11 md:w-10 md:hover:w-36 md:focus-within:w-36 overflow-x-hidden overflow-y-auto border-r border-border pr-1">
-        <div className="hidden md:block text-[9px] font-display tracking-widest text-muted-foreground px-1 mb-1 truncate">
-          <span className="group-hover/sidebar:hidden group-focus-within/sidebar:hidden">▸</span>
-          <span className="hidden group-hover/sidebar:inline group-focus-within/sidebar:inline">DOJO · CAOS</span>
+      <button
+        type="button"
+        onClick={() => setMobileMenuOpen((open) => !open)}
+        className="dojo-menu-trigger relative z-40 grid h-11 w-11 shrink-0 place-items-center self-start rounded-md border border-primary/60 bg-background/95 text-primary shadow-neon backdrop-blur md:hidden"
+        aria-label={
+          mobileMenuOpen ? "Fechar menu DOJO CAOS" : "Abrir menu DOJO CAOS"
+        }
+        aria-expanded={mobileMenuOpen}
+        aria-controls="dojo-caos-menu"
+      >
+        {mobileMenuOpen ? (
+          <X className="h-5 w-5" />
+        ) : (
+          <Menu className="h-5 w-5" />
+        )}
+      </button>
+
+      {mobileMenuOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Fechar menu DOJO CAOS"
+        />
+      )}
+
+      {/* Barra compacta no desktop; vira menu lateral acionável no touch. */}
+      <aside
+        id="dojo-caos-menu"
+        aria-label="DOJO CAOS"
+        className={`dojo-mobile-menu group/sidebar shrink-0 flex flex-col items-stretch gap-1.5 py-1 transition-all duration-300 overflow-x-hidden overflow-y-auto border-r border-border pr-1 ${mobileMenuOpen ? "fixed z-[65] left-[max(0.75rem,env(safe-area-inset-left))] top-[max(4.25rem,env(safe-area-inset-top))] bottom-[max(0.75rem,env(safe-area-inset-bottom))] w-[min(18rem,calc(100vw-1.5rem))] rounded-lg border bg-background/95 p-3 shadow-2xl backdrop-blur" : "hidden"} md:static md:flex md:w-10 md:hover:w-36 md:focus-within:w-36 md:rounded-none md:border-y-0 md:border-l-0 md:bg-transparent md:p-0 md:shadow-none`}
+      >
+        <div className="text-sm md:text-[9px] font-display tracking-widest text-muted-foreground px-1 mb-1 truncate">
+          <span className="group-hover/sidebar:hidden group-focus-within/sidebar:hidden">
+            ▸
+          </span>
+          <span className="ml-2 md:ml-0 md:hidden group-hover/sidebar:inline group-focus-within/sidebar:inline">
+            DOJO · CAOS
+          </span>
         </div>
         {actions.map(({ icon: Icon, label, color, onClick, disabled }) => (
           <button
@@ -380,10 +497,10 @@ export const Chat = () => {
             disabled={disabled}
             title={label}
             aria-label={label}
-            className={`h-11 md:h-8 w-full rounded-md border transition-colors inline-flex items-center justify-center md:justify-start px-1.5 gap-2 disabled:opacity-40 ${colorMap[color]}`}
+            className={`h-11 md:h-8 w-full rounded-md border transition-colors inline-flex items-center justify-start px-3 md:px-1.5 gap-3 md:gap-2 disabled:opacity-40 ${colorMap[color]}`}
           >
             <Icon className="w-4 h-4 shrink-0" />
-            <span className="hidden md:inline text-[10px] font-display tracking-widest whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 group-focus-within/sidebar:opacity-100 transition-opacity">
+            <span className="inline text-sm md:text-[10px] font-display tracking-widest whitespace-nowrap opacity-100 md:opacity-0 group-hover/sidebar:opacity-100 group-focus-within/sidebar:opacity-100 transition-opacity">
               {label}
             </span>
           </button>
@@ -391,126 +508,136 @@ export const Chat = () => {
       </aside>
 
       <div className="flex-1 min-w-0 flex flex-col">
-      <div className="flex items-center justify-end gap-2 mb-2">
-        <BeltBadge progress={progress} onReset={resetProgress} />
-      </div>
-
-
-      <PersonaSelector
-        value={persona}
-        onChange={(id) => setPersona(id)}
-        customs={customs}
-        onOpenLab={() => {
-          setLabDraft(null);
-          setLabOpen(true);
-        }}
-      />
-
-      {reverseMode && (
-        <div className="mt-1 mb-1 px-2 py-1 rounded border border-[hsl(var(--neon-cyan)/0.4)] bg-[hsl(var(--neon-cyan)/0.05)] text-[10px] font-mono text-[hsl(var(--neon-cyan))] flex items-center gap-1.5">
-          <RefreshCw className="w-3 h-3" />
-          MODO REVERSO ATIVO — {reversePending ? "responda à pergunta da IAHH" : "duelo encerrado"}
+        <div className="flex items-center justify-end gap-2 mb-2">
+          <BeltBadge progress={progress} onReset={resetProgress} />
         </div>
-      )}
 
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto py-2 sm:py-4 space-y-3 sm:space-y-4 pr-1"
-      >
-        {messages.map((m, i) => (
-          <ChatMessage
-            key={i}
-            role={m.role}
-            content={m.content}
-            isStreaming={streaming && i === messages.length - 1 && m.role === "assistant"}
-            glitched={m.glitched}
-            onShare={
-              m.role === "assistant" && m.content && !(streaming && i === messages.length - 1)
-                ? () => setShareIdx(i)
-                : undefined
-            }
-            onStory={
-              m.role === "assistant" && m.content && !(streaming && i === messages.length - 1)
-                ? () => setStoryIdx(i)
-                : undefined
-            }
-            onMeme={
-              m.role === "assistant" && m.content && !(streaming && i === messages.length - 1)
-                ? () => setMemeIdx(i)
-                : undefined
-            }
-          />
-        ))}
-      </div>
+        <PersonaSelector
+          value={persona}
+          onChange={(id) => setPersona(id)}
+          customs={customs}
+          onOpenLab={() => {
+            setLabDraft(null);
+            setLabOpen(true);
+          }}
+        />
 
-      <div className="border-t border-border pt-2 sm:pt-3 space-y-2">
-        <div className="flex gap-2">
-          <Textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                send();
+        {reverseMode && (
+          <div className="mt-1 mb-1 px-2 py-1 rounded border border-[hsl(var(--neon-cyan)/0.4)] bg-[hsl(var(--neon-cyan)/0.05)] text-[10px] font-mono text-[hsl(var(--neon-cyan))] flex items-center gap-1.5">
+            <RefreshCw className="w-3 h-3" />
+            MODO REVERSO ATIVO —{" "}
+            {reversePending ? "responda à pergunta da IAHH" : "duelo encerrado"}
+          </div>
+        )}
+
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto py-2 sm:py-4 space-y-3 sm:space-y-4 pr-1"
+        >
+          {messages.map((m, i) => (
+            <ChatMessage
+              key={i}
+              role={m.role}
+              content={m.content}
+              isStreaming={
+                streaming && i === messages.length - 1 && m.role === "assistant"
               }
-            }}
-            placeholder={
-              reversePending
-                ? "Responda à pergunta da IAHH... ela vai te julgar."
-                : "Desafie a IAHH..."
-            }
-            rows={2}
-            disabled={streaming}
-            className="resize-none bg-input border-border focus-visible:ring-primary font-mono text-sm min-h-[56px]"
-          />
-          <Button
-            onClick={send}
-            disabled={streaming || !input.trim()}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 self-stretch px-3 sm:px-4 font-display tracking-wider shadow-neon shrink-0"
-          >
-            <Send className="w-4 h-4" />
-          </Button>
+              glitched={m.glitched}
+              onShare={
+                m.role === "assistant" &&
+                m.content &&
+                !(streaming && i === messages.length - 1)
+                  ? () => setShareIdx(i)
+                  : undefined
+              }
+              onStory={
+                m.role === "assistant" &&
+                m.content &&
+                !(streaming && i === messages.length - 1)
+                  ? () => setStoryIdx(i)
+                  : undefined
+              }
+              onMeme={
+                m.role === "assistant" &&
+                m.content &&
+                !(streaming && i === messages.length - 1)
+                  ? () => setMemeIdx(i)
+                  : undefined
+              }
+            />
+          ))}
         </div>
 
-        <div className="flex gap-2 flex-wrap items-center">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={worsen}
-            disabled={streaming || reverseMode}
-            className={`border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10 font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ${
-              comboCount >= 2 ? "animate-pulse-glow border-destructive text-destructive" : ""
-            }`}
-          >
-            <Skull className="w-3.5 h-3.5 mr-1" />
-            <span className="hidden sm:inline">⚡ Piorar resposta</span>
-            <span className="sm:hidden">⚡ Piorar</span>
-          </Button>
-          {comboCount > 0 && (
-            <span
-              className={`text-[11px] font-display tracking-widest px-2 py-1 rounded ${
-                comboCount === 2
-                  ? "bg-destructive/20 text-destructive animate-flash-neon"
-                  : "bg-neon-magenta/10 text-neon-magenta"
+        <div className="border-t border-border pt-2 sm:pt-3 space-y-2">
+          <div className="flex gap-2">
+            <Textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  send();
+                }
+              }}
+              placeholder={
+                reversePending
+                  ? "Responda à pergunta da IAHH... ela vai te julgar."
+                  : "Desafie a IAHH..."
+              }
+              rows={2}
+              disabled={streaming}
+              className="resize-none bg-input border-border focus-visible:ring-primary font-mono text-sm min-h-[56px]"
+            />
+            <Button
+              onClick={send}
+              disabled={streaming || !input.trim()}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 self-stretch px-3 sm:px-4 font-display tracking-wider shadow-neon shrink-0"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="flex gap-2 flex-wrap items-center">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={worsen}
+              disabled={streaming || reverseMode}
+              className={`border-neon-magenta text-neon-magenta hover:bg-neon-magenta/10 font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ${
+                comboCount >= 2
+                  ? "animate-pulse-glow border-destructive text-destructive"
+                  : ""
               }`}
             >
-              COMBO x{comboCount}
-              {comboCount === 2 && " · FATALITY READY"}
-            </span>
-          )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={reset}
-            disabled={streaming}
-            className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ml-auto"
-          >
-            <RotateCcw className="w-3.5 h-3.5 mr-1" />
-            <span className="hidden sm:inline">Resetar dojo</span>
-            <span className="sm:hidden">Reset</span>
-          </Button>
+              <Skull className="w-3.5 h-3.5 mr-1" />
+              <span className="hidden sm:inline">⚡ Piorar resposta</span>
+              <span className="sm:hidden">⚡ Piorar</span>
+            </Button>
+            {comboCount > 0 && (
+              <span
+                className={`text-[11px] font-display tracking-widest px-2 py-1 rounded ${
+                  comboCount === 2
+                    ? "bg-destructive/20 text-destructive animate-flash-neon"
+                    : "bg-neon-magenta/10 text-neon-magenta"
+                }`}
+              >
+                COMBO x{comboCount}
+                {comboCount === 2 && " · FATALITY READY"}
+              </span>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={reset}
+              disabled={streaming}
+              className="border-border text-muted-foreground hover:text-foreground font-display tracking-wider text-[11px] sm:text-xs h-11 sm:h-8 px-2 sm:px-3 ml-auto"
+            >
+              <RotateCcw className="w-3.5 h-3.5 mr-1" />
+              <span className="hidden sm:inline">Resetar dojo</span>
+              <span className="sm:hidden">Reset</span>
+            </Button>
+          </div>
         </div>
-      </div>
       </div>
 
       {shareIdx !== null && (
@@ -596,7 +723,10 @@ export const Chat = () => {
         open={rouletteOpen}
         onClose={() => setRouletteOpen(false)}
         currentPersona={persona}
-        recentUserMessages={messages.filter((m) => m.role === "user").slice(-5).map((m) => m.content)}
+        recentUserMessages={messages
+          .filter((m) => m.role === "user")
+          .slice(-5)
+          .map((m) => m.content)}
         onXp={(xp) => {
           addXp(xp);
           bumpWeekly({ xp });

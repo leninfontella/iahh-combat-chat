@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Swords, Zap, X } from "lucide-react";
+import { Swords, Zap } from "lucide-react";
 import { PERSONAS, type PersonaId, type Persona } from "@/lib/personas";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -130,13 +130,6 @@ export const DuelMode = ({ open, onClose, onXp, onWin }: Props) => {
             <Swords className="w-4 h-4" />
             MODO DUELO · 1v1
           </DialogTitle>
-          <button
-            onClick={onClose}
-            disabled={running}
-            className="text-muted-foreground hover:text-foreground disabled:opacity-30"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </DialogHeader>
 
         <div className="px-4 pb-4 flex-1 min-h-0 flex flex-col gap-3 overflow-hidden">

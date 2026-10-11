@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Trophy, X, Flame, Skull, Swords, Target, Zap, MessageSquare } from "lucide-react";
+import { Trophy, Flame, Skull, Swords, Target, Zap, MessageSquare } from "lucide-react";
 import {
   loadWeekly,
   scoreOf,
@@ -48,9 +48,6 @@ export const WeeklyRanking = ({ open, onClose, refreshKey }: Props) => {
             <Trophy className="w-4 h-4" />
             RANKING SEMANAL
           </DialogTitle>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-            <X className="w-4 h-4" />
-          </button>
         </DialogHeader>
 
         <div className="px-4 pb-4 overflow-y-auto space-y-3">
