@@ -450,23 +450,6 @@ export const Chat = () => {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => setMobileMenuOpen((open) => !open)}
-        className="dojo-menu-trigger relative z-40 grid h-11 w-11 shrink-0 place-items-center self-start rounded-md border border-primary/60 bg-background/95 text-primary shadow-neon backdrop-blur md:hidden"
-        aria-label={
-          mobileMenuOpen ? "Fechar menu DOJO CAOS" : "Abrir menu DOJO CAOS"
-        }
-        aria-expanded={mobileMenuOpen}
-        aria-controls="dojo-caos-menu"
-      >
-        {mobileMenuOpen ? (
-          <X className="h-5 w-5" />
-        ) : (
-          <Menu className="h-5 w-5" />
-        )}
-      </button>
-
       {mobileMenuOpen && (
         <button
           type="button"
@@ -509,6 +492,24 @@ export const Chat = () => {
 
       <div className="flex-1 min-w-0 flex flex-col">
         <div className="flex items-center justify-end gap-2 mb-2">
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="dojo-menu-trigger relative z-[70] grid h-11 w-9 shrink-0 place-items-center rounded-md text-primary md:hidden"
+            aria-label={
+              mobileMenuOpen ? "Fechar menu DOJO CAOS" : "Abrir menu DOJO CAOS"
+            }
+            aria-expanded={mobileMenuOpen}
+            aria-controls="dojo-caos-menu"
+          >
+            <span className="grid h-8 w-8 place-items-center rounded border border-primary/60 bg-background/95 shadow-neon">
+              {mobileMenuOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Menu className="h-4 w-4" />
+              )}
+            </span>
+          </button>
           <BeltBadge progress={progress} onReset={resetProgress} />
         </div>
 
