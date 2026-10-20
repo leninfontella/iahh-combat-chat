@@ -41,8 +41,8 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
-      <DialogPrimitive.Close className="sticky ml-auto -mb-11 right-1 top-1 z-50 grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-background/90 opacity-90 shadow-lg ring-offset-background backdrop-blur transition-opacity data-[state=open]:text-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none sm:right-2 sm:top-2">
-        <X className="h-4 w-4" />
+      <DialogPrimitive.Close className="sticky ml-auto -mb-[22px] right-1 top-1 z-50 grid h-[22px] w-[22px] shrink-0 place-items-center rounded-none border border-border bg-background/90 opacity-90 shadow-lg ring-offset-background backdrop-blur transition-opacity data-[state=open]:text-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none sm:right-2 sm:top-2">
+        <X className="h-2 w-2" strokeWidth={2.5} />
         <span className="sr-only">Fechar</span>
       </DialogPrimitive.Close>
       {children}
